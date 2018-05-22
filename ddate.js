@@ -36,43 +36,49 @@
 
                 let data = _fullMonthCalendar();
                 let currentSelectedMonth = data.month;
+                let currentSelectedYear = data.year;
 
                 let body = document.querySelector("#cala");
-                // creates a <table> element and a <tbody> element
                 var tbl = document.createElement("table");
                 var tblBody = document.createElement("tbody");
                 
                 var controlRow = document.createElement("tr");
-                let previousMonth = document.createElement("td");
+                let previousMonth = document.createElement("th");
                 previousMonth.innerHTML="<";
                 controlRow.appendChild(previousMonth);
-                let monthYear = document.createElement("td");
+                previousMonth.setAttribute("class","previousMonth");
+                let monthYear = document.createElement("th");
                 monthYear.innerHTML=data.fullMonth+", "+data.year;
                 monthYear.setAttribute("colspan", "5");
+                monthYear.setAttribute("class","monthHeading");
                 controlRow.appendChild(monthYear);
-                let nextMonth = document.createElement("td");
+                let nextMonth = document.createElement("th");
                 nextMonth.innerHTML=">";
+                nextMonth.setAttribute("class","nextMonth");
 
                 previousMonth.addEventListener("click",function(){
                     if(currentSelectedMonth<1){
                         currentSelectedMonth=11;
+                        currentSelectedYear--;
+                        
                     }else{
                         currentSelectedMonth--;
                     }
                     body.innerHTML="";
-                    _setDate(01,currentSelectedMonth+1,2018);
+                    _setDate(01,currentSelectedMonth+1,currentSelectedYear);
                     _renderCalander();
                 });
 
                 nextMonth.addEventListener("click",function(){
                     if(currentSelectedMonth>11){
                         currentSelectedMonth=1;
+                        currentSelectedYear++;
                     }else{
                         currentSelectedMonth++;
                     }
 
                     body.innerHTML="";
-                    _setDate(01,currentSelectedMonth+1,2018);
+                    _setDate(01,currentSelectedMonth+1,currentSelectedYear);
                     _renderCalander();
                     //alert(currentSelectedMonth);
                 });
@@ -110,11 +116,8 @@
                 let counter=0;
 
                 let row;
-                // creating all cells
                 for (let i = 0; i < 1; i++) {
-                    // creates a table row
                     row = document.createElement("tr");
-                
                     for (let j = 1; j < calender.weekdays.indexOf(data.calander[0].day)+1; j++) {
                         var cell = document.createElement("td");
                         var cellText = document.createTextNode(" ");
@@ -122,15 +125,10 @@
                         row.appendChild(cell);
                         counter=j;
                     }
-                
-                    // add the row to the end of the table body
-                    tblBody.appendChild(row);
+                   tblBody.appendChild(row);
                 }
 
-                
-                
-
-                tbl.setAttribute("border", "2");
+                tbl.setAttribute("class", "ddate");
 
                 data.calander.forEach(function(value, index){
                     if(counter==7){
@@ -271,18 +269,4 @@
         mm = 24
         ss = 05
         ap = AM/PM
-        
-        
-        {
-            month:"January",
-            isLeapYear:false,
-            calander:{
-                1:"Sunday",
-                2:"Monday"
-            }
-        }
-        
-        
-        
-        
         */

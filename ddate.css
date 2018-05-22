@@ -1,0 +1,25 @@
+.ddate {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 50%;
+}
+
+.ddate td, .ddate th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.ddate tr:nth-child(even){background-color: #f2f2f2;}
+
+.ddate td:hover {background-color: #ddd;}
+
+.ddate th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    color: #000000;
+}
+
+.ddate .previousMonth, .ddate .nextMonth{
+    cursor:pointer;
+}
