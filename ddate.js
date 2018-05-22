@@ -1,7 +1,8 @@
 
 
         let DDate = function(){
-            let calender = {
+            let now = new Date();
+            let calendar = {
                     month:{
                             0:{days:31,month:"January"},
                             1:{days:function(year){
@@ -19,72 +20,79 @@
                             11:{days:31,month:"December"}
                         },
                     weekdays:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-            };
+            },
         
-            let now = new Date();
-            
-            let _setDate = function(dd,mm,yyyy){
+             _setDate = function(dd,mm,yyyy){
                 now.setDate(dd);
                 now.setMonth(mm-1);
                 now.setFullYear(yyyy);
-            }
+            };
         
-            //_setDate(01,12,2018);
-
+            //_setDate(01,04,1985);
 
             let _renderCalander = function(){
 
                 let data = _fullMonthCalendar();
                 let currentSelectedMonth = data.month;
                 let currentSelectedYear = data.year;
+                let counter=0, weekLength=7;
+                let row;
+                let selector = "#cala";
 
-                let body = document.querySelector("#cala");
-                var tbl = document.createElement("table");
-                var tblBody = document.createElement("tbody");
-                
-                var controlRow = document.createElement("tr");
-                let previousMonth = document.createElement("th");
-                previousMonth.innerHTML="<";
-                controlRow.appendChild(previousMonth);
-                previousMonth.setAttribute("class","previousMonth");
+                let container = document.querySelector(selector);
+                let table = document.createElement("table");
+                let tableBody = document.createElement("tbody");
                 let monthYear = document.createElement("th");
+                let controlRow = document.createElement("tr");
+                let previousMonth = document.createElement("th");
+                let nextMonth = document.createElement("th");
+
                 monthYear.innerHTML=data.fullMonth+", "+data.year;
                 monthYear.setAttribute("colspan", "5");
                 monthYear.setAttribute("class","monthHeading");
+                controlRow.appendChild(previousMonth);
                 controlRow.appendChild(monthYear);
-                let nextMonth = document.createElement("th");
-                nextMonth.innerHTML=">";
-                nextMonth.setAttribute("class","nextMonth");
 
-                previousMonth.addEventListener("click",function(){
-                    if(currentSelectedMonth<1){
-                        currentSelectedMonth=11;
-                        currentSelectedYear--;
-                        
-                    }else{
-                        currentSelectedMonth--;
-                    }
-                    body.innerHTML="";
-                    _setDate(01,currentSelectedMonth+1,currentSelectedYear);
-                    _renderCalander();
-                });
+                
+                (function previous(){
+                    //Previous Month Click Functionality
+                    previousMonth.innerHTML="<";
+                    previousMonth.setAttribute("class","previousMonth");
+                    previousMonth.addEventListener("click",function(){
+                        if(currentSelectedMonth<1){
+                            currentSelectedMonth=11;
+                            currentSelectedYear--;
+                            
+                        }else{
+                            currentSelectedMonth--;
+                        }
+                        container.innerHTML="";
+                        _setDate(01,currentSelectedMonth+1,currentSelectedYear);
+                        _renderCalander();
+                    });
+                })();
 
-                nextMonth.addEventListener("click",function(){
-                    if(currentSelectedMonth>11){
-                        currentSelectedMonth=1;
-                        currentSelectedYear++;
-                    }else{
-                        currentSelectedMonth++;
-                    }
+                 
+                (function next(){
+                    //Previous Month Click Functionality
+                    nextMonth.innerHTML=">";
+                    nextMonth.setAttribute("class","nextMonth");
+                    nextMonth.addEventListener("click",function(data){
+                        if(currentSelectedMonth>10){
+                            currentSelectedMonth=0;
+                            currentSelectedYear++;
+                        }else{
+                            currentSelectedMonth++;
+                        }
 
-                    body.innerHTML="";
-                    _setDate(01,currentSelectedMonth+1,currentSelectedYear);
-                    _renderCalander();
-                    //alert(currentSelectedMonth);
-                });
-
+                        container.innerHTML="";
+                        _setDate(01,currentSelectedMonth+1,currentSelectedYear);
+                        _renderCalander();
+                    });
+                })();
+                
                 controlRow.appendChild(nextMonth);
-                tblBody.appendChild(controlRow);
+                tableBody.appendChild(controlRow);
 
                 var initialrow = document.createElement("tr");
                 let sunday = document.createElement("td");
@@ -108,30 +116,24 @@
                 let saturday = document.createElement("td");
                 saturday.innerHTML="Saturday";
                 initialrow.appendChild(saturday);
-                tblBody.appendChild(initialrow);
+                tableBody.appendChild(initialrow);
 
-                tbl.appendChild(tblBody);
-                body.appendChild(tbl);    
+                table.appendChild(tableBody);
+                container.appendChild(table);    
                 
-                let counter=0;
-
-                let row;
-                for (let i = 0; i < 1; i++) {
-                    row = document.createElement("tr");
-                    for (let j = 1; j < calender.weekdays.indexOf(data.calander[0].day)+1; j++) {
-                        var cell = document.createElement("td");
-                        var cellText = document.createTextNode(" ");
-                        cell.appendChild(cellText);
-                        row.appendChild(cell);
-                        counter=j;
-                    }
-                   tblBody.appendChild(row);
+                row = document.createElement("tr");
+                for (let j = 1; j < calendar.weekdays.indexOf(data.calander[0].day)+1; j++) {
+                    var cell = document.createElement("td");
+                    var cellText = document.createTextNode(" ");
+                    cell.appendChild(cellText);
+                    row.appendChild(cell);
+                    counter=j;
                 }
-
-                tbl.setAttribute("class", "ddate");
+                tableBody.appendChild(row);
+                table.setAttribute("class", "ddate");
 
                 data.calander.forEach(function(value, index){
-                    if(counter==7){
+                    if(counter==weekLength){
                         counter=0;
                         row = document.createElement("tr");
                     }
@@ -139,64 +141,65 @@
                         var cellText = document.createTextNode(value.date);
                         cell.appendChild(cellText);
                         row.appendChild(cell);
-                        tblBody.appendChild(row);
+                        tableBody.appendChild(row);
                         counter++;
                 });
+
                 let lastRow = document.querySelector("#cala table tr:last-child");
-                while(7-lastRow.cells.length){
+                while(weekLength-lastRow.cells.length){
                         let cell = document.createElement("td");
                         let cellText = document.createTextNode(" ");
                         cell.appendChild(cellText);
                         lastRow.appendChild(cell);
-                    }
-            }
+                }
+            },
             
-            let getSetDay = function(date){
+            _getSetDay = function(date){
                 now.setDate(date);
                 return  now.getDay();
-            }
+            },
            
-            let _nowDate = function(){
+            _nowDate = function(now){
                 return now.getDate();
-            }
+            },
         
-            let _nowMonth = function(){
+            _nowMonth = function(now){
                 let month = now.getMonth()+1;
                 return month<10 ? month = "0"+month.toString() : month;
-            }
+            },
         
-            let _nowFullMonth = function(){
-                return calender.month[now.getMonth()].month;
-            }
+            _nowFullMonth = function(now){
+                return calendar.month[now.getMonth()].month;
+            },
         
-            let _nowDay = function(){
-                return calender.weekdays[now.getDay()];
-            }
+            _nowDay = function(now){
+                return calendar.weekdays[now.getDay()];
+            },
         
-            let _nowYear = function(){
+            _nowYear = function(now){
                 return now.getFullYear();
-            }
+            },
         
-            let _getFullHours = function(){
+            _getFullHours = function(now){
                 return now.getHours();
-            }
+            },
         
-            let _getHours = function(){
+            _getHours = function(now){
                 return now.getHours()<12?now.getHours():now.getHours()-12;
-            }
+            },
         
-            let _getMinutes = function(){
+            _getMinutes = function(now){
                 return now.getMinutes();
-            }
+            },
         
-            let _getSeconds = function(){
+            _getSeconds = function(now){
                 let seconds = now.getSeconds();
                 return seconds<10 ? seconds = "0"+seconds.toString() : seconds;
-            }
+            },
         
-            let _getMeridiem = function(){
-                return (_getFullHours() > 11) ? "PM" : "AM";
-            }
+            _getMeridiem = function(now){
+                return (_getFullHours(now) > 11) ? "PM" : "AM";
+            },
         
              _fullMonthCalendar = function(){
                 let _fullMonthCalendarData = [];
@@ -204,58 +207,84 @@
                 let month;
         
                  if(now.getMonth()===1){
-                    month = calender.month[now.getMonth()].days();
+                    month = calendar.month[now.getMonth()].days();
                  }else{
-                    month = calender.month[now.getMonth()].days;
+                    month = calendar.month[now.getMonth()].days;
                  }
         
                 for(i=1;i<=month;i++){
-                    _fullMonthCalendarData.push({"date":i,"day":calender.weekdays[getSetDay(i)]});
+                    _fullMonthCalendarData.push({"date":i,"day":calendar.weekdays[_getSetDay(i)]});
                 }
                 _currentMonth.isLeapYear = month===29?true:false;
                 _currentMonth.year = now.getFullYear();
-                _currentMonth.fullMonth = calender.month[now.getMonth()].month;
+                _currentMonth.fullMonth = calendar.month[now.getMonth()].month;
                 _currentMonth.month = now.getMonth();
                 _currentMonth.calander = _fullMonthCalendarData;
                 return _currentMonth;
-             }
+             },
         
-            let _currentDate = function(obj){
+            _currentDate = function(obj, dateObj){
+                let now = new Date();
+                dateObj = dateObj ? dateObj : now;
                 dateFormat=obj.dateFormat;
-                dateFormat = dateFormat.replace("DD",_nowDate().toString());
-                dateFormat = dateFormat.replace("MM",_nowMonth().toString());
-                dateFormat = dateFormat.replace("YYYY",_nowYear().toString());
-                dateFormat = dateFormat.replace("yy",_nowYear().toString().slice(2,4));
-                dateFormat = dateFormat.replace("hh",_getHours().toString());
-                dateFormat = dateFormat.replace("HH",_getFullHours().toString());
-                dateFormat = dateFormat.replace("mm",_getMinutes().toString());
-                dateFormat = dateFormat.replace("ss",_getSeconds().toString());
-                dateFormat = dateFormat.replace("ss",_getSeconds().toString());
-                dateFormat = dateFormat.replace("ap",_getMeridiem().toString());
-                dateFormat = dateFormat.replace("m",_nowFullMonth().toString());
-                dateFormat = dateFormat.replace("d",_nowDay().toString());
+                dateFormat = dateFormat.replace("DD",_nowDate(dateObj).toString());
+                dateFormat = dateFormat.replace("MM",_nowMonth(dateObj).toString());
+                dateFormat = dateFormat.replace("YYYY",_nowYear(dateObj).toString());
+                dateFormat = dateFormat.replace("yy",_nowYear(dateObj).toString().slice(2,4));
+                dateFormat = dateFormat.replace("hh",_getHours(dateObj).toString());
+                dateFormat = dateFormat.replace("HH",_getFullHours(dateObj).toString());
+                dateFormat = dateFormat.replace("mm",_getMinutes(dateObj).toString());
+                dateFormat = dateFormat.replace("ss",_getSeconds(dateObj).toString());
+                dateFormat = dateFormat.replace("ss",_getSeconds(dateObj).toString());
+                dateFormat = dateFormat.replace("ap",_getMeridiem(dateObj).toString());
+                dateFormat = dateFormat.replace("m",_nowFullMonth(dateObj).toString());
+                dateFormat = dateFormat.replace("d",_nowDay(dateObj).toString());
                 return dateFormat;
+            },
+
+            _addDays = function(addDays, selectedDate){
+                selectedDate = selectedDate ? selectedDate : _currentDate({dateFormat:"YYYY/MM/DD"});
+                selectedDate = selectedDate.split("/");
+                let startDate = new Date(parseInt(selectedDate[0]),parseInt(selectedDate[1])-1,selectedDate[2]);
+                startDate.setDate(startDate.getDate()+addDays);
+                return _currentDate({dateFormat:"MM/DD/YYYY"},startDate);
+            },
+            
+            _differenceDate = function(startDate, endDate){
+                
+            },
+            
+            _subDate = function(subDays, selectedDate){
+                subDays = subDays * -1;
+                return _addDays(subDays, selectedDate);
             };
 
-            _renderCalander();
-        
             return {
-                currentDate : _currentDate,
-                now:now,
-                fullMonthCalendar:_fullMonthCalendar
+                now : _currentDate,
+                diff:_differenceDate,
+                add:_addDays,
+                sub:_subDate,
+                fullMonthCalendar:_fullMonthCalendar,
+                renderCalander:_renderCalander
             }
             
         };
         
-        DDate = new DDate();
-        
-        console.log(DDate.currentDate({dateFormat:"m, DD YYYY"}));
-        console.log(DDate.currentDate({dateFormat:"DD m YYYY"}));
-        console.log(DDate.currentDate({dateFormat:"MM/DD/YYYY hh:mm:ss ap"}));
-        console.log(DDate.currentDate({dateFormat:"d MM/DD/YYYY hh:mm:ss ap"}));
-        console.log(DDate.currentDate({dateFormat:"hh:mm:ss ap"}));
-        
+        DDate = DDate();
+        DDate.renderCalander();
+
+        console.log(DDate.now({dateFormat:"m, DD YYYY"}));
+        console.log(DDate.now({dateFormat:"DD m YYYY"}));
+        console.log(DDate.now({dateFormat:"MM/DD/YYYY hh:mm:ss ap"}));
+        console.log(DDate.now({dateFormat:"d MM/DD/YYYY hh:mm:ss ap"}));
+        console.log(DDate.now({dateFormat:"hh:mm:ss ap"}));
         console.log(DDate.fullMonthCalendar());
+
+        // setInterval(function(){
+        //     let liveTimeDate = DDate.now({dateFormat:"d MM/DD/YYYY hh:mm:ss ap"});
+        //     document.querySelector("#liveDate").innerHTML = liveTimeDate;
+        // },1000);
+        
         
         /* Available Format
         m = January
