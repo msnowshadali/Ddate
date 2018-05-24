@@ -9,10 +9,35 @@
 </head>
 <body>
     
+    <input type="text" id="datePicker" />
+
     <div id="cala">
         
     </div>
 <script src="ddate.js"></script>
+
+<script>
+    
+    
+
+    // DDate("cala").renderCalander({
+    //         weekTitleLength:3,
+    //         selectCurrentDate:true,
+    //         nextCallback:function(){
+
+    //         },
+    //         previousCallBack:function(){
+
+    //         }
+    // });
+
+    DDate("datePicker").datePicker({
+        dateFormat:"DD/m/YYYY",
+        weekTitleLength:3,
+        selectCurrentDate:true
+    });
+            
+</script>
 </body>
 </html>
 

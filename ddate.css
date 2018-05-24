@@ -1,17 +1,21 @@
 .ddate {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    width: 50%;
 }
 
 .ddate td, .ddate th {
     border: 1px solid #ddd;
     padding: 8px;
+    text-align: center;
 }
 
-.ddate tr:nth-child(even){background-color: #f2f2f2;}
+.ddate tr:nth-child(even){
+   /* background-color: #f2f2f2;*/
+}
 
-.ddate td:hover {background-color: #ddd;}
+.ddate td:hover {
+    background-color: #ddd;
+}
 
 .ddate th {
     padding-top: 12px;
@@ -23,3 +27,10 @@
 .ddate .previousMonth, .ddate .nextMonth{
     cursor:pointer;
 }
+
+.ddate .defaultSelect{
+    background: #ddd;
+}
+
+
+/*******temp*********/
