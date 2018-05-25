@@ -11,6 +11,8 @@
     
     <input type="text" id="datePicker" />
 
+    <input type="text" id="datePicker2" />
+
     <div id="cala">
         
     </div>
@@ -20,18 +22,27 @@
     
     
 
-    // DDate("cala").renderCalander({
-    //         weekTitleLength:3,
-    //         selectCurrentDate:true,
-    //         nextCallback:function(){
+    DDate("cala").renderCalander({
+            weekTitleLength:3,
+            selectCurrentDate:true,
+            actionCallback:function(data){
+                console.log(data);
+            },
+            nextCallback:function(data){
 
-    //         },
-    //         previousCallBack:function(){
+            },
+            previousCallBack:function(data){
 
-    //         }
-    // });
+            }
+    });
 
     DDate("datePicker").datePicker({
+        dateFormat:"DD/m/YYYY",
+        weekTitleLength:3,
+        selectCurrentDate:true
+    });
+
+    DDate("datePicker2").datePicker({
         dateFormat:"DD/m/YYYY",
         weekTitleLength:3,
         selectCurrentDate:true

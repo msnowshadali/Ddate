@@ -33,7 +33,7 @@
         
             //_setDate(01,04,1985);
             
-            let _renderCalander = function(selectorId,cb,config){
+            let _renderCal = function(selectorId,cb,config){
                 config.weekTitleLength = config && config.weekTitleLength ? config.weekTitleLength: 10;
                 config.selectCurrentDate = config && config.selectCurrentDate ? config.selectCurrentDate: false;
                 
@@ -73,7 +73,7 @@
                         }
                         container.innerHTML="";
                         _setDate(01,currentSelectedMonth,currentSelectedYear);
-                        _renderCalander(selectorId,cb,config);
+                        _renderCal(selectorId,cb,config);
                     });
                 })();
 
@@ -92,7 +92,7 @@
 
                         container.innerHTML="";
                         _setDate(01,currentSelectedMonth+1,currentSelectedYear);
-                        _renderCalander(selectorId,cb,config);
+                        _renderCal(selectorId,cb,config);
                     });
                 })();
                 
@@ -145,13 +145,12 @@
                         var cell = document.createElement("td");
                         var cellText = document.createTextNode(value.date);
                         if(config.selectCurrentDate){
-                            if(value.date===currentDate.getDate() && data.month===currentDate.getMonth() && data.year===currentDate.getFullYear()){
+                            if(value.date===currentDate.getDate() && data.month===currentDate.getMonth()+1 && data.year===currentDate.getFullYear()){
                                 cell.setAttribute("class", "defaultSelect");  
                             }
                         }
                         cell.appendChild(cellText);
                         cell.addEventListener("click",function(){
-                            //_currentDate(obj, new Date(value.year,value.month,value.date)); //ALI
                             cb(_currentDate(config,new Date(value.year,value.month-1,value.date)));
                         });
                         row.appendChild(cell);
@@ -241,7 +240,11 @@
             _currentDate = function(obj, dateObj){
                 let now = new Date();
                 dateObj = dateObj ? dateObj : now;
-                dateFormat=obj.dateFormat;
+                if(obj && obj.dateFormat){
+                    dateFormat= obj.dateFormat
+                }else{
+                    return dateObj;
+                }
                 dateFormat = dateFormat.replace("DD",_nowDate(dateObj).toString());
                 dateFormat = dateFormat.replace("MM",_nowMonth(dateObj).toString());
                 dateFormat = dateFormat.replace("YYYY",_nowYear(dateObj).toString());
@@ -272,16 +275,16 @@
             _datePicker = function(config){
 
                 let container = document.createElement("div");
-                container.setAttribute("id","datePickerContainer");
+                container.setAttribute("id",selectorId+"datePickerContainer");
                 container.setAttribute("style","display:none");
                 document.body.appendChild(container);
-                _renderCalander("datePickerContainer",function(data){
+                _renderCal(selectorId+"datePickerContainer",function(data){
                     document.querySelector("#"+selectorId).value=data;
-                    let a = document.querySelector("#datePickerContainer");
+                    let a = document.querySelector("#"+selectorId+"datePickerContainer");
                     a.setAttribute("style","display:none");
                 },config);
                 let field = document.querySelector("#"+selectorId);
-                let sd = document.querySelector("#datePickerContainer");
+                let sd = document.querySelector("#"+selectorId+"datePickerContainer");
                 field.addEventListener("focus",function(){
                     sd.setAttribute("style","display:block");
                 });
@@ -292,6 +295,14 @@
             _subDate = function(subDays, selectedDate){
                 subDays = subDays * -1;
                 return _addDays(subDays, selectedDate);
+            }
+            
+            _renderCalander = function(config){
+                console.log(config);
+                config = config ? config : {};
+                let cb = config && config.actionCallback ? config.actionCallback : function(data){console.log(data)};
+                _renderCal(selectorId,cb,config);
+
             };
 
             return {
@@ -299,7 +310,7 @@
                 diff:_differenceDate,
                 add:_addDays,
                 sub:_subDate,
-                fullMonthCalendar:_fullMonthCalendar,
+                fullMonthCalendar:_fullMonthCalendar, // Remove later
                 renderCalander:_renderCalander,
                 datePicker:_datePicker
             }

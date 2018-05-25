@@ -1,23 +1,27 @@
-# DDate
+# DDate - Dynamic DatePicker
 
 This date picker provides an easy way of creating both single and multi-viewed calendars capable of accepting single, range, and multiple selected dates.  Easy to style, with two example styles provided: an attractive 'dark' style, and a Google Analytics-like 'clean' style.
 
 ## Quick start
 
-Download the latest release, and jQuery.
+Download and include the files.
 
     <script type="text/javascript" src="ddate.js"></script>
-    <link rel="stylesheet" media="screen" type="text/css" href="/js/datepicker/css/base.css" />
-    <link rel="stylesheet" media="screen" type="text/css" href="/js/datepicker/css/clean.css" />
+    <link rel="stylesheet" media="screen" type="text/css" href="ddate.css" />
     
+    Add the container in HTML Document
     <div id="simple-calendar"></div>
     
+    Add in your script file to initate on page load
     <script type="text/javascript">
-      $('#simple-calendar').DatePicker({
-        mode: 'single',
-        inline: true,
-        date: new Date()
+      DDate("simple-calendar").renderCalander({
+          weekTitleLength:3,
+          selectCurrentDate:true,
+          actionCallback:function(data){
+              console.log(data);
+          }
       });
+
     </script>
 
 <img src="https://github.com/foxrunsoftware/DatePicker/blob/master/examples/screenshot-1.png?raw=true" />
