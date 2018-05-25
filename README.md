@@ -24,7 +24,7 @@ Download and include the files.
 
     </script>
 
-<img src="https://github.com/foxrunsoftware/DatePicker/blob/master/examples/screenshot-1.png?raw=true" />
+<img src="https://github.com/msnowshadali/Ddate/blob/master/sample/images/calendar.png" width="250" />
 
 Take a look at the [examples page](https://msnowshadali.github.io/Ddate/) for live, and additional examples.  Then visit the [API reference page](https://msnowshadali.github.io/Ddate/reference.html).
 
