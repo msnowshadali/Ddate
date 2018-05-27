@@ -1,6 +1,4 @@
-
-
-        let DDate = function(selectorId){
+    let DDate = function(selectorId){
 
             const config={};
             let now = new Date();
@@ -36,6 +34,7 @@
             let _renderCal = function(selectorId,cb,config){
                 config.weekTitleLength = config && config.weekTitleLength ? config.weekTitleLength: 10;
                 config.selectCurrentDate = config && config.selectCurrentDate ? config.selectCurrentDate: false;
+                config.exclude = config.exclude ? config.exclude : false;
                 
                 let data = _fullMonthCalendar();
                 let currentSelectedMonth = data.month;
@@ -83,15 +82,13 @@
                     nextMonth.innerHTML=">";
                     nextMonth.setAttribute("class","nextMonth");
                     nextMonth.addEventListener("click",function(data){
-                        if(currentSelectedMonth>10){
-                            currentSelectedMonth=0;
+                        currentSelectedMonth++
+                        if(currentSelectedMonth>12){
+                            currentSelectedMonth=1;
                             currentSelectedYear++;
-                        }else{
-                            currentSelectedMonth++;
                         }
-
                         container.innerHTML="";
-                        _setDate(01,currentSelectedMonth+1,currentSelectedYear);
+                        _setDate(01,currentSelectedMonth,currentSelectedYear);
                         _renderCal(selectorId,cb,config);
                     });
                 })();
@@ -126,6 +123,19 @@
                 table.appendChild(tableBody);
                 container.appendChild(table);    
                 
+                
+                 row = document.createElement("tr");
+
+                // for (let j = 0; j < 7; j++) {
+                //     var cell = document.createElement("td");
+                //     var cellText = document.createTextNode(" ");
+                //     cell.appendChild(cellText);
+                //     row.appendChild(cell);
+                //     //counter=j;
+                // }
+
+
+                tableBody.appendChild(row);
                 row = document.createElement("tr");
                 for (let j = 1; j < calendar.weekdays.indexOf(data.calander[0].day)+1; j++) {
                     var cell = document.createElement("td");
@@ -149,10 +159,22 @@
                                 cell.setAttribute("class", "defaultSelect");  
                             }
                         }
-                        cell.appendChild(cellText);
-                        cell.addEventListener("click",function(){
+
+                        let cbb = function(){
                             cb(_currentDate(config,new Date(value.year,value.month-1,value.date)));
-                        });
+                        };
+
+                        cell.addEventListener("click",cbb);
+
+                        if(config.exclude){
+                            config.exclude.forEach(function(val, index){
+                                if(data.month===val.month && value.date===val.date && data.year===val.year){
+                                    cell.setAttribute("class", "mute");
+                                    cell.removeEventListener("click",cbb);
+                                }
+                            })
+                        }
+                        cell.appendChild(cellText);
                         row.appendChild(cell);
                         tableBody.appendChild(row);
                         counter++;
@@ -282,6 +304,8 @@
                     document.querySelector("#"+selectorId).value=data;
                     let a = document.querySelector("#"+selectorId+"datePickerContainer");
                     a.setAttribute("style","display:none");
+                    let success = config.success ? config.success : ()=>{};
+                    success(data);
                 },config);
                 let field = document.querySelector("#"+selectorId);
                 let sd = document.querySelector("#"+selectorId+"datePickerContainer");

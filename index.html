@@ -28,25 +28,43 @@
             actionCallback:function(data){
                 console.log(data);
             },
-            nextCallback:function(data){
-
+            exclude:[{
+                month:05,
+                date:01,
+                year:2018
             },
-            previousCallBack:function(data){
-
-            }
+            {
+                month:05,
+                date:05,
+                year:2018
+            }]
     });
 
     DDate("datePicker").datePicker({
         dateFormat:"DD/m/YYYY",
         weekTitleLength:3,
-        selectCurrentDate:true
+        selectCurrentDate:true,
+        success:function(data){
+            console.log(data);
+        },
+        exclude:[{
+            month:05,
+            date:01,
+            year:2018
+        },
+        {
+            month:05,
+            date:05,
+            year:2018
+        }],
+        showPreviousMonth:true
     });
 
-    DDate("datePicker2").datePicker({
-        dateFormat:"DD/m/YYYY",
-        weekTitleLength:3,
-        selectCurrentDate:true
-    });
+    // DDate("datePicker2").datePicker({
+    //     dateFormat:"DD/m/YYYY",
+    //     weekTitleLength:3,
+    //     selectCurrentDate:true
+    // });
             
 </script>
 </body>

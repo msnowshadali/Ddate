@@ -7,6 +7,12 @@
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
+    cursor: default;
+}
+
+.ddate td.mute{
+    background: #efefef;
+    color: #d0d0d0;
 }
 
 .ddate tr:nth-child(even){
