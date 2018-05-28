@@ -1,3 +1,6 @@
+
+
+
     let DDate = function(selectorId){
 
             const config={};
@@ -328,6 +331,23 @@
                 _renderCal(selectorId,cb,config);
 
             };
+
+            (function eventsTriggering(){
+                document.addEventListener("click",function(event){
+                if(event.target.type!=="text" &&
+                event.target.className !== "nextMonth" &&
+                event.target.className !== "previousMonth" &&
+                event.target.className !=="monthHeading" &&
+                event.target.className !== "mute"){
+                        let containerVisibility = document.querySelector("#datePickerdatePickerContainer").style.display;
+                        if(event.target.id!=="datePickerdatePickerContainer"){
+                            if(containerVisibility==="block"){
+                            document.querySelector("#datePickerdatePickerContainer").style.display = "none";   
+                            }
+                        }  
+                }
+                });
+            })();
 
             return {
                 now : _currentDate,
