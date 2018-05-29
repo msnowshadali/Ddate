@@ -1,8 +1,6 @@
 
-
-
     let DDate = function(selectorId){
-
+            let _element=selectorId;
             const config={};
             let now = new Date();
             let currentDate = new Date();
@@ -38,6 +36,8 @@
                 config.weekTitleLength = config && config.weekTitleLength ? config.weekTitleLength: 10;
                 config.selectCurrentDate = config && config.selectCurrentDate ? config.selectCurrentDate: false;
                 config.exclude = config.exclude ? config.exclude : false;
+                config.disableEndDates = config && config.disableEndDates ? config.disableEndDates : false;
+                config.disableFutureDates = config && config.disableFutureDates ? config.disableFutureDates : false;
                 
                 let data = _fullMonthCalendar();
                 let currentSelectedMonth = data.month;
@@ -45,6 +45,7 @@
                 let counter=0, weekLength=7;
                 let row;
                 let selector = "#"+selectorId;
+                let isCurrentDate = false;
 
                 let container = document.querySelector(selector);
                 let table = document.createElement("table");
@@ -69,7 +70,6 @@
                         if(currentSelectedMonth<2){
                             currentSelectedMonth=12;
                             currentSelectedYear--;
-                            
                         }else{
                             currentSelectedMonth--;
                         }
@@ -159,8 +159,13 @@
                         var cellText = document.createTextNode(value.date);
                         if(config.selectCurrentDate){
                             if(value.date===currentDate.getDate() && data.month===currentDate.getMonth()+1 && data.year===currentDate.getFullYear()){
-                                cell.setAttribute("class", "defaultSelect");  
+                                cell.setAttribute("class", "defaultSelect"); 
+                                document.getElementById(_element).value = _currentDate(config, new Date(data.year, value.month-1, value.date));
                             }
+                        }
+
+                        if(value.date===currentDate.getDate() && data.month===currentDate.getMonth()+1 && data.year===currentDate.getFullYear()){
+                            isCurrentDate = true;
                         }
 
                         let cbb = function(){
@@ -168,6 +173,11 @@
                         };
 
                         cell.addEventListener("click",cbb);
+
+                        if(config.disableEndDates && !isCurrentDate){
+                            cell.setAttribute("class", "mute");
+                            cell.removeEventListener("click",cbb);
+                        }
 
                         if(config.exclude){
                             config.exclude.forEach(function(val, index){
@@ -177,6 +187,12 @@
                                 }
                             })
                         }
+
+                        if(config.disableFutureDates && isCurrentDate && value.date!==currentDate.getDate()){
+                            cell.setAttribute("class", "mute");
+                            cell.removeEventListener("click",cbb);
+                        }
+
                         cell.appendChild(cellText);
                         row.appendChild(cell);
                         tableBody.appendChild(row);
@@ -263,6 +279,8 @@
              },
         
             _currentDate = function(obj, dateObj){
+                //obj is a date format
+                //dateObj is date object
                 let now = new Date();
                 dateObj = dateObj ? dateObj : now;
                 if(obj && obj.dateFormat){
@@ -298,7 +316,9 @@
             },
 
             _datePicker = function(config){
-
+                let s = document.getElementById(_element);
+                let top = s.offsetHeight+s.offsetTop;
+                let left = s.offsetLeft;
                 let container = document.createElement("div");
                 container.setAttribute("id",selectorId+"datePickerContainer");
                 container.setAttribute("style","display:none");
@@ -308,12 +328,13 @@
                     let a = document.querySelector("#"+selectorId+"datePickerContainer");
                     a.setAttribute("style","display:none");
                     let success = config.success ? config.success : ()=>{};
+                    document.getElementById(_element)
                     success(data);
                 },config);
                 let field = document.querySelector("#"+selectorId);
                 let sd = document.querySelector("#"+selectorId+"datePickerContainer");
                 field.addEventListener("focus",function(){
-                    sd.setAttribute("style","display:block");
+                    sd.setAttribute("style","display:block; top:"+top+"px");
                 });
                 field.addEventListener("blur",function(){
                 });
