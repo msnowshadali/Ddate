@@ -323,7 +323,8 @@
                 let container = document.createElement("div");
                 container.setAttribute("id",_pickerContainer);//1
                 container.setAttribute("style","display:none");
-                document.body.appendChild(container);
+                let _elementData = document.getElementById(_element);
+                _elementData.parentElement.appendChild(container);
                 _renderCal(_pickerContainer,function(data){//3
                     document.querySelector("#"+selectorId).value=data;
                     let a = document.querySelector("#"+_pickerContainer);//2
