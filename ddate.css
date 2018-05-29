@@ -1,6 +1,7 @@
 .ddate {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
+    background: #ffffff;
 }
 
 .ddate td, .ddate th {
@@ -13,10 +14,6 @@
 .ddate td.mute{
     background: #efefef;
     color: #d0d0d0;
-}
-
-.ddate tr:nth-child(even){
-   /* background-color: #f2f2f2;*/
 }
 
 .ddate td:hover {
@@ -36,10 +33,14 @@
 
 .ddate .defaultSelect{
     background: #ddd;
+    font-weight: bold;
 }
 
 #datePickerdatePickerContainer{
     position: absolute;
 }
 
+.previousNextMonth{
+    background:#f7f7f7;
+}
 /*******temp*********/
