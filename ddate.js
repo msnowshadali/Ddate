@@ -316,28 +316,46 @@
             },
 
             _datePicker = function(config){
+                let _pickerContainer = selectorId+"datePickerContainer";
                 let s = document.getElementById(_element);
                 let top = s.offsetHeight+s.offsetTop;
                 let left = s.offsetLeft;
                 let container = document.createElement("div");
-                container.setAttribute("id",selectorId+"datePickerContainer");
+                container.setAttribute("id",_pickerContainer);//1
                 container.setAttribute("style","display:none");
                 document.body.appendChild(container);
-                _renderCal(selectorId+"datePickerContainer",function(data){
+                _renderCal(_pickerContainer,function(data){//3
                     document.querySelector("#"+selectorId).value=data;
-                    let a = document.querySelector("#"+selectorId+"datePickerContainer");
+                    let a = document.querySelector("#"+_pickerContainer);//2
                     a.setAttribute("style","display:none");
                     let success = config.success ? config.success : ()=>{};
                     document.getElementById(_element)
                     success(data);
                 },config);
                 let field = document.querySelector("#"+selectorId);
-                let sd = document.querySelector("#"+selectorId+"datePickerContainer");
+                let sd = document.querySelector("#"+_pickerContainer);//4
                 field.addEventListener("focus",function(){
-                    sd.setAttribute("style","display:block; top:"+top+"px");
+                    sd.setAttribute("style","display:inline-block; position:absolute; left:"+left+"px; top:"+top+"px");
                 });
                 field.addEventListener("blur",function(){
                 });
+
+                (function eventsTriggering(){
+                    document.addEventListener("click",function(event){
+                    if(event.target.type!=="text" &&
+                    event.target.className !== "nextMonth" &&
+                    event.target.className !== "previousMonth" &&
+                    event.target.className !=="monthHeading" &&
+                    event.target.className !== "mute"){
+                            let containerVisibility = document.querySelector("#"+_pickerContainer).style.display;//5
+                            if(event.target.id!==_pickerContainer){//6
+                                if(containerVisibility==="inline-block"){
+                                document.querySelector("#"+_pickerContainer).style.display = "none";//7
+                                }
+                            }  
+                    }
+                    });
+                })();
             },
             
             _subDate = function(subDays, selectedDate){
@@ -353,22 +371,7 @@
 
             };
 
-            (function eventsTriggering(){
-                document.addEventListener("click",function(event){
-                if(event.target.type!=="text" &&
-                event.target.className !== "nextMonth" &&
-                event.target.className !== "previousMonth" &&
-                event.target.className !=="monthHeading" &&
-                event.target.className !== "mute"){
-                        let containerVisibility = document.querySelector("#datePickerdatePickerContainer").style.display;
-                        if(event.target.id!=="datePickerdatePickerContainer"){
-                            if(containerVisibility==="block"){
-                            document.querySelector("#datePickerdatePickerContainer").style.display = "none";   
-                            }
-                        }  
-                }
-                });
-            })();
+            
 
             return {
                 now : _currentDate,
