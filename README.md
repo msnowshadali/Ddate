@@ -11,28 +11,31 @@ Download and include the files [ddate.css](https://msnowshadali.github.io/Ddate/
     <link rel="stylesheet" media="screen" type="text/css" href="ddate.css" />
     
     Add the container in HTML Document
-    <div id="simple-calendar"></div>
+    <input type="text" id="datepicker" />
     
     Add in your script file to initate on page load
     <script type="text/javascript">
-      DDate("datePicker").datePicker({
+      DDate("datepicker").datePicker({
         dateFormat:"DD/m/YYYY",
         weekTitleLength:3,
-        selectCurrentDate:true,
+        selectCurrentDate:false,
+        multiSelect:true, // Pending
         success:function(data){
             console.log(data);
         },
         exclude:[{
-            month:05,
-            date:01,
+            month:12,
+            date:31,
             year:2018
         },
         {
-            month:05,
-            date:05,
-            year:2018
+            month:01,
+            date:01,
+            year:2019
         }],
-        showPreviousMonth:true
+        showPreviousMonth:true,
+        disableEndDates:false,
+        disableFutureDates:true
     });
     </script>
 
