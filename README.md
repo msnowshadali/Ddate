@@ -40,6 +40,17 @@ Download and include the files [ddate.css](https://msnowshadali.github.io/Ddate/
 
 Take a look at the [sample implimentation](https://codepen.io/uSoftwares/pen/OZewNK) for live, and additional examples.  Then visit the [API reference page](https://msnowshadali.github.io/Ddate/reference.html).
 
+## Props
+| Prop | Type | Description |
+:------------ |:---------------| :-----|
+| **`dateFormat`** | `String` | Required. Ex. "DD/m/YYYY" |
+| **`weekTitleLength`** | `Number` | optional. its used to set the week length  |
+| **`selectCurrentDate`** | `Boolean` | sets default date on initilize  |
+| **`success`** | `Function` | Optional. Success callback|
+| **`exclude`** | `Object` | Optional. disable few dates, its not clickable  |
+| **`disableEndDates`** | `Boolean` | Optional. Disable all previous ended dates comparing to the current date |
+| **`disableFutureDates`** | `Boolean` | Optional. Disable all future ended dates comparing to the current date |
+
 ## Bug tracker
 
 Have a bug? Please create an issue here on GitHub!
