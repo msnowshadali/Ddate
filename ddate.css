@@ -4,11 +4,35 @@
     background: #ffffff;
 }
 
-.ddate td, .ddate th {
+.ddate td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
     cursor: default;
+}
+
+.ddate th span.arrows{
+    background: #cccccc;
+    border-radius: 100%;
+    width: 20px;
+    display: block;
+    height: 20px;
+    color: #ffffff;
+}
+
+.ddate th,.ddate td.header {
+    border: 0px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    cursor: default;
+}
+
+.ddate th:hover,.ddate td.header:hover {
+    background: none;
+}
+
+.ddate th{
+    border-bottom: 1px solid #ddd;
 }
 
 .ddate td.mute{

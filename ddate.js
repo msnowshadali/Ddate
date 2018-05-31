@@ -7,7 +7,7 @@
             let calendar = {
                     month:{
                             0:{days:31,month:"January"},
-                            1:{days:function(year){
+                            1:{days:(year)=>{
                                 return now.getFullYear()%4===0?29:28;
                             },month:"Febuary"},
                             2:{days:31,month:"March"},
@@ -24,7 +24,7 @@
                     weekdays:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
             },
         
-             _setDate = function(dd,mm,yyyy){
+             _setDate = (dd,mm,yyyy)=>{
                 now.setDate(dd);
                 now.setMonth(mm-1);
                 now.setFullYear(yyyy);
@@ -32,7 +32,7 @@
         
             //_setDate(01,04,1985);
             
-            let _renderCal = function(selectorId,cb,config){
+            let _renderCal = (selectorId,cb,config)=>{
                 config.weekTitleLength = config && config.weekTitleLength ? config.weekTitleLength: 10;
                 config.selectCurrentDate = config && config.selectCurrentDate ? config.selectCurrentDate: false;
                 config.exclude = config.exclude ? config.exclude : false;
@@ -64,7 +64,7 @@
                 
                 (function previous(){
                     //Previous Month Click Functionality
-                    previousMonth.innerHTML="<";
+                    previousMonth.innerHTML="<span class='arrows'><</span>";
                     previousMonth.setAttribute("class","previousMonth");
                     previousMonth.addEventListener("click",function(){
                         if(currentSelectedMonth<2){
@@ -82,7 +82,7 @@
                  
                 (function next(){
                     //Previous Month Click Functionality
-                    nextMonth.innerHTML=">";
+                    nextMonth.innerHTML="<span class='arrows'>></span>";
                     nextMonth.setAttribute("class","nextMonth");
                     nextMonth.addEventListener("click",function(data){
                         currentSelectedMonth++
@@ -100,27 +100,16 @@
                 tableBody.appendChild(controlRow);
 
                 var initialrow = document.createElement("tr");
-                let sunday = document.createElement("td");
-                sunday.innerHTML="Sunday".slice(0,config.weekTitleLength);
-                initialrow.appendChild(sunday);
-                let monday = document.createElement("td");
-                monday.innerHTML="Monday".slice(0,config.weekTitleLength);
-                initialrow.appendChild(monday);
-                let tuesday = document.createElement("td");
-                tuesday.innerHTML="Tuesday".slice(0,config.weekTitleLength);
-                initialrow.appendChild(tuesday);
-                let wednesday = document.createElement("td");
-                wednesday.innerHTML="Wednesday".slice(0,config.weekTitleLength);
-                initialrow.appendChild(wednesday);
-                let thursday = document.createElement("td");
-                thursday.innerHTML="Thursday".slice(0,config.weekTitleLength);
-                initialrow.appendChild(thursday);
-                let friday = document.createElement("td");
-                friday.innerHTML="Friday".slice(0,config.weekTitleLength);
-                initialrow.appendChild(friday);
-                let saturday = document.createElement("td");
-                saturday.innerHTML="Saturday".slice(0,config.weekTitleLength);
-                initialrow.appendChild(saturday);
+                
+
+                calendar.weekdays.forEach((value, index)=>{
+                    let day=[];
+                    day[index] = document.createElement("td");
+                    day[index].innerHTML=value.slice(0,config.weekTitleLength);
+                    day[index].setAttribute("class","header");
+                    initialrow.appendChild(day[index]);
+                });
+ 
                 tableBody.appendChild(initialrow);
 
                 table.appendChild(tableBody);
@@ -150,7 +139,7 @@
                 tableBody.appendChild(row);
                 table.setAttribute("class", "ddate");
 
-                data.calander.forEach(function(value, index){
+                data.calander.forEach((value, index)=>{
                     if(counter==weekLength){
                         counter=0;
                         row = document.createElement("tr");
@@ -168,7 +157,7 @@
                             isCurrentDate = true;
                         }
 
-                        let cbb = function(){
+                        let cbb =()=>{
                             cb(_currentDate(config,new Date(value.year,value.month-1,value.date)));
                         };
 
@@ -180,7 +169,7 @@
                         }
 
                         if(config.exclude){
-                            config.exclude.forEach(function(val, index){
+                            config.exclude.forEach((val, index)=>{
                                 if(data.month===val.month && value.date===val.date && data.year===val.year){
                                     cell.setAttribute("class", "mute");
                                     cell.removeEventListener("click",cbb);
@@ -208,54 +197,54 @@
                 }
             },
             
-            _getSetDay = function(date){
+            _getSetDay = (date)=>{
                 now.setDate(date);
                 return  now.getDay();
             },
            
-            _nowDate = function(now){
+            _nowDate = (now)=>{
                 return now.getDate();
             },
         
-            _nowMonth = function(now){
+            _nowMonth = (now)=>{
                 let month = now.getMonth()+1;
                 return month<10 ? month = "0"+month.toString() : month;
             },
         
-            _nowFullMonth = function(now){
+            _nowFullMonth = (now)=>{
                 return calendar.month[now.getMonth()].month;
             },
         
-            _nowDay = function(now){
+            _nowDay = (now)=>{
                 return calendar.weekdays[now.getDay()];
             },
         
-            _nowYear = function(now){
+            _nowYear = (now)=>{
                 return now.getFullYear();
             },
         
-            _getFullHours = function(now){
+            _getFullHours = (now)=>{
                 return now.getHours();
             },
         
-            _getHours = function(now){
+            _getHours = (now)=>{
                 return now.getHours()<12?now.getHours():now.getHours()-12;
             },
         
-            _getMinutes = function(now){
+            _getMinutes = (now)=>{
                 return now.getMinutes();
             },
         
-            _getSeconds = function(now){
+            _getSeconds = (now)=>{
                 let seconds = now.getSeconds();
                 return seconds<10 ? seconds = "0"+seconds.toString() : seconds;
             },
         
-            _getMeridiem = function(now){
+            _getMeridiem = (now)=>{
                 return (_getFullHours(now) > 11) ? "PM" : "AM";
             },
         
-             _fullMonthCalendar = function(){
+             _fullMonthCalendar = ()=>{
                 let _fullMonthCalendarData = [];
                 let _currentMonth = {};
                 let month;
@@ -278,7 +267,7 @@
                 return _currentMonth;
              },
         
-            _currentDate = function(obj, dateObj){
+            _currentDate =(obj, dateObj)=>{
                 //obj is a date format
                 //dateObj is date object
                 let now = new Date();
@@ -303,7 +292,7 @@
                 return dateFormat;
             },
 
-            _addDays = function(addDays, selectedDate){
+            _addDays = (addDays, selectedDate)=>{
                 selectedDate = selectedDate ? selectedDate : _currentDate({dateFormat:"YYYY/MM/DD"});
                 selectedDate = selectedDate.split("/");
                 let startDate = new Date(parseInt(selectedDate[0]),parseInt(selectedDate[1])-1,selectedDate[2]);
@@ -311,11 +300,11 @@
                 return _currentDate({dateFormat:"MM/DD/YYYY"},startDate);
             },
             
-            _differenceDate = function(startDate, endDate){
+            _differenceDate = (startDate, endDate)=>{
                 
             },
 
-            _datePicker = function(config){
+            _datePicker = (config)=>{
                 let _pickerContainer = selectorId+"datePickerContainer";
                 let s = document.getElementById(_element);
                 let top = s.offsetHeight+s.offsetTop;
@@ -359,12 +348,12 @@
                 })();
             },
             
-            _subDate = function(subDays, selectedDate){
+            _subDate = (subDays, selectedDate)=>{
                 subDays = subDays * -1;
                 return _addDays(subDays, selectedDate);
             }
             
-            _renderCalander = function(config){
+            _renderCalander = (config)=>{
                 console.log(config);
                 config = config ? config : {};
                 let cb = config && config.actionCallback ? config.actionCallback : function(data){console.log(data)};
