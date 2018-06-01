@@ -11,7 +11,7 @@
     cursor: default;
 }
 
-.ddate th span.arrows{
+.ddate th span.darrows{
     background: #cccccc;
     border-radius: 100%;
     width: 20px;
@@ -20,14 +20,14 @@
     color: #ffffff;
 }
 
-.ddate th,.ddate td.header {
+.ddate th,.ddate td.dheader {
     border: 0px solid #ddd;
     padding: 8px;
     text-align: center;
     cursor: default;
 }
 
-.ddate th:hover,.ddate td.header:hover {
+.ddate th:hover,.ddate td.dheader:hover {
     background: none;
 }
 

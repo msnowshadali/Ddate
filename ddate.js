@@ -57,15 +57,15 @@
 
                 monthYear.innerHTML=data.fullMonth+", "+data.year;
                 monthYear.setAttribute("colspan", "5");
-                monthYear.setAttribute("class","monthHeading");
+                monthYear.setAttribute("class","dmonthHeading");
                 controlRow.appendChild(previousMonth);
                 controlRow.appendChild(monthYear);
 
                 
                 (function previous(){
                     //Previous Month Click Functionality
-                    previousMonth.innerHTML="<span class='arrows'><</span>";
-                    previousMonth.setAttribute("class","previousMonth");
+                    previousMonth.innerHTML="<span class='darrows'><</span>";
+                    previousMonth.setAttribute("class","dpreviousMonth");
                     previousMonth.addEventListener("click",function(){
                         if(currentSelectedMonth<2){
                             currentSelectedMonth=12;
@@ -82,8 +82,8 @@
                  
                 (function next(){
                     //Previous Month Click Functionality
-                    nextMonth.innerHTML="<span class='arrows'>></span>";
-                    nextMonth.setAttribute("class","nextMonth");
+                    nextMonth.innerHTML="<span class='darrows'>></span>";
+                    nextMonth.setAttribute("class","dnextMonth");
                     nextMonth.addEventListener("click",function(data){
                         currentSelectedMonth++
                         if(currentSelectedMonth>12){
@@ -106,7 +106,7 @@
                     let day=[];
                     day[index] = document.createElement("td");
                     day[index].innerHTML=value.slice(0,config.weekTitleLength);
-                    day[index].setAttribute("class","header");
+                    day[index].setAttribute("class","dheader");
                     initialrow.appendChild(day[index]);
                 });
  
@@ -164,21 +164,21 @@
                         cell.addEventListener("click",cbb);
 
                         if(config.disableEndDates && !isCurrentDate){
-                            cell.setAttribute("class", "mute");
+                            cell.setAttribute("class", "dmute");
                             cell.removeEventListener("click",cbb);
                         }
 
                         if(config.exclude){
                             config.exclude.forEach((val, index)=>{
                                 if(data.month===val.month && value.date===val.date && data.year===val.year){
-                                    cell.setAttribute("class", "mute");
+                                    cell.setAttribute("class", "dmute");
                                     cell.removeEventListener("click",cbb);
                                 }
                             })
                         }
 
                         if(config.disableFutureDates && isCurrentDate && value.date!==currentDate.getDate()){
-                            cell.setAttribute("class", "mute");
+                            cell.setAttribute("class", "dmute");
                             cell.removeEventListener("click",cbb);
                         }
 
@@ -333,10 +333,11 @@
                 (function eventsTriggering(){
                     document.addEventListener("click",function(event){
                     if(event.target.type!=="text" &&
-                    event.target.className !== "nextMonth" &&
-                    event.target.className !== "previousMonth" &&
-                    event.target.className !=="monthHeading" &&
-                    event.target.className !== "mute"){
+                    event.target.className !== "dnextMonth" &&
+                    event.target.className !== "dpreviousMonth" &&
+                    event.target.className !=="dmonthHeading" &&
+                    event.target.className !=="darrows" &&
+                    event.target.className !== "dmute"){
                             let containerVisibility = document.querySelector("#"+_pickerContainer).style.display;//5
                             if(event.target.id!==_pickerContainer){//6
                                 if(containerVisibility==="inline-block"){
